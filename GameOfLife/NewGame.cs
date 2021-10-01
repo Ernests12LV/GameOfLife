@@ -1,28 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GameOfLife
 {
     public class NewGame
     {
-        public void StartNew(bool[,] cellState, int y, int x)
+        public void StartNew(bool[,,] cellState, int y, int x, int z)
         {
-            for (int a = 0; a < y; a++)
+            for (int c = 0; c < z; c++)
             {
-                for (int b = 0; b < x; b++)
+                for (int a = 0; a < y; a++)
                 {
-                    Random random = new Random();
-                    int roll = random.Next(0, 2);
-
-                    if (roll == 0)
+                    for (int b = 0; b < x; b++)
                     {
-                        cellState[a,b] = false;
-                    }
+                        Random random = new Random();
+                        int roll = random.Next(0, 2);
 
-                    else
-                    {
-                        cellState[a,b] = true;
+                        if (roll == 0)
+                        {
+                            cellState[c, a, b] = false;
+                        }
+
+                        else
+                        {
+                            cellState[c, a, b] = true;
+                        }
                     }
                 }
             }

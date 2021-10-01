@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GameOfLife
+﻿namespace GameOfLife
 {
    
         public enum GameOptions
         {
             Continue,
+            Switch,
             Save,
             Exit
         }

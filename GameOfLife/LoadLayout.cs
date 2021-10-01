@@ -7,38 +7,70 @@ namespace GameOfLife
 {
     public class LoadLayout
     {
-        public void Load(bool[,] cellState)
+        public void Load(bool[,,] cellState, int y, int x, int z)
         {
             const string openSpan = "Layouts\\";
             const string closeSpan = ".json";
+            string userChoice;
 
             string Name_Of_File;
             string layout = @"C:\Users\erce\source\repos\GameOfLife\GameOfLife\Layouts";
 
             Console.Clear();
-            Console.WriteLine("Choose File To Load!");
+            Console.WriteLine("Do you Want to choose or apply Random layouts? (choose/random)");
+            userChoice = Console.ReadLine();
+            userChoice.ToLower();
 
-            string[] fileEntries = Directory.GetFiles(layout);
-
-            foreach (string name in fileEntries)
+            if (userChoice.Contains("choose"))
             {
-                int openingPosition = name.IndexOf(openSpan);
-                int closingPosition = name.IndexOf(closeSpan);
+                Console.Clear();
+                Console.WriteLine("Choose File To Load!");
 
-                openingPosition += openSpan.Length;
-                int length = closingPosition - openingPosition;
-                Console.WriteLine(name.Substring(openingPosition, length));
-            }    
+                string[] fileEntries = Directory.GetFiles(layout);
 
-            Name_Of_File = Console.ReadLine();
+                foreach (string name in fileEntries)
+                {
+                    int openingPosition = name.IndexOf(openSpan);
+                    int closingPosition = name.IndexOf(closeSpan);
 
-            string fileName = $@"C:\Users\erce\source\repos\GameOfLife\GameOfLife\Layouts\{Name_Of_File}.json";
-            string jsonString = File.ReadAllText(fileName);
-            List<JsonModel> l = JsonSerializer.Deserialize<List<JsonModel>>(jsonString);
+                    openingPosition += openSpan.Length;
+                    int length = closingPosition - openingPosition;
+                    Console.WriteLine(name.Substring(openingPosition, length));
+                }
 
-            for (int i = 0; i < l.Count; i++)
+                Name_Of_File = Console.ReadLine();
+                Name_Of_File.ToLower();
+
+                string fileName = $@"C:\Users\erce\source\repos\GameOfLife\GameOfLife\Layouts\{Name_Of_File}.json";
+                string jsonString = File.ReadAllText(fileName);
+                List<JsonModel> l = JsonSerializer.Deserialize<List<JsonModel>>(jsonString);
+
+                for (int c = 0; c < z; c++)
+                {
+                    for (int i = 0; i < l.Count; i++)
+                    {
+                        cellState[c, l[i].posY, l[i].posX] = true;
+                    }
+                }
+            }
+            else if (userChoice.Contains("random"))
             {
-                cellState[l[i].posY, l[i].posX] = true;
+                Console.Clear();
+
+                for (int c = 0; c < z; c++)
+                {
+                    string[] fileEntries = Directory.GetFiles(layout);
+
+                    var rand = new Random();
+
+                    string fileName = fileEntries[rand.Next(fileEntries.Length)];
+                    string jsonString = File.ReadAllText(fileName);
+                    List<JsonModel> l = JsonSerializer.Deserialize<List<JsonModel>>(jsonString);
+                    for (int i = 0; i < l.Count; i++)
+                    {
+                        cellState[c, l[i].posY, l[i].posX] = true;
+                    }
+                }
             }
         }
     }

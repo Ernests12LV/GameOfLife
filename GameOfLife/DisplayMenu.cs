@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using System.Threading;
 
 namespace GameOfLife
 {
     public class DisplayMenu
     {
-        public void Menu(bool[,] cellState, int y, int x)
+        public void Menu(bool[,,] cellState, int y, int x, int z)
         {
             MenuAnimation menuAnimation = new MenuAnimation();
             NewGame game = new NewGame();
@@ -28,15 +24,16 @@ namespace GameOfLife
             while (!validChoice)
             {
                 userInput = Console.ReadLine();
+                userInput = userInput.ToLower();
 
                 if (userInput.Contains("1") || userInput.Contains("new"))
                 {
-                    game.StartNew(cellState, y, x);
+                    game.StartNew(cellState, y, x, z);
                     validChoice = true;
                 }
                 else if (userInput.Contains("2") || userInput.Contains("load"))
                 {
-                    load.Load(cellState);
+                    load.Load(cellState, y, x, z);
                     validChoice = true;
                 }
                 else if (userInput.Contains("3") || userInput.Contains("exit"))

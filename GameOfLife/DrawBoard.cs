@@ -4,11 +4,11 @@ namespace GameOfLife
 {
     public class DrawBoard
     {
-        public void DrawLife(bool[,]cellState, bool[,]newCellState, string stateDead, string stateAlive, int y, int x, int i)
+        public void DrawLife(bool[,,]cellState, bool[,,]newCellState, string stateDead, string stateAlive, int y, int x, int i, int gameNum)
         {
-
             Console.Clear();
             Console.WriteLine();
+            Console.WriteLine($"Game <{gameNum}>");
             Console.WriteLine("Generation = " + i);
             Console.WriteLine();
 
@@ -16,9 +16,9 @@ namespace GameOfLife
             {
                 for (int b = 0; b < x; b++)
                 {
-                    cellState[a, b] = newCellState[a, b];
+                    cellState[gameNum,a, b] = newCellState[gameNum,a, b];
 
-                    if (newCellState[a, b] == false)
+                    if (newCellState[gameNum,a, b] == false)
                     {
                         Console.Write(stateDead + " ");
                     }
