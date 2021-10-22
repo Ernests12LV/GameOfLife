@@ -1,6 +1,5 @@
 ﻿namespace GameOfLife
 {
-   
         public enum GameOptions
         {
             Continue,
@@ -8,5 +7,4 @@
             Save,
             Exit
         }
-   
 }

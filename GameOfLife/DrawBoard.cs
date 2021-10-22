@@ -1,38 +1,44 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GameOfLife
 {
     public class DrawBoard
     {
-        public void DrawLife(bool[,,]cellState, bool[,,]newCellState, string stateDead, string stateAlive, int y, int x, int i, int gameNum)
+        public void DrawLife(Board board, string stateDead, string stateAlive, int gameToShow, int TotalAliveCellCount)
         {
+            int gameNum = gameToShow + 1;
             Console.Clear();
             Console.WriteLine();
             Console.WriteLine($"Game <{gameNum}>");
-            Console.WriteLine("Generation = " + i);
+            Console.WriteLine("Generation = " + board.Generation + "                           Alive Cell Count in this Board = " + board.AliveCells + "                     Total Alive Cells = " + TotalAliveCellCount);
             Console.WriteLine();
 
-            for (int a = 0; a < y; a++)
+            if (board.AliveCells == 0)
             {
-                for (int b = 0; b < x; b++)
+                Console.WriteLine("THE BOARD IS DEAD");
+            }
+            else
+            {
+                for (int a = 0; a < board.Cells.GetLength(0); a++)
                 {
-                    cellState[gameNum,a, b] = newCellState[gameNum,a, b];
-
-                    if (newCellState[gameNum,a, b] == false)
+                    for (int b = 0; b < board.Cells.GetLength(1); b++)
                     {
-                        Console.Write(stateDead + " ");
-                    }
-                    else
-                    {
-                        Console.Write(stateAlive + " ");
-                    }
-                    if (b == x-1)
-                    {
-                        Console.WriteLine();
+                        if (board.Cells[a, b])
+                        {
+                            Console.Write(stateAlive + " ");
+                        }
+                        else
+                        {
+                            Console.Write(stateDead + " ");
+                        }
+                        if (b == board.Cells.GetLength(1) - 1)
+                        {
+                            Console.WriteLine();
+                        }
                     }
                 }
             }
-
         }
     }
 }

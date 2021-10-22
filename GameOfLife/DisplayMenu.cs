@@ -1,25 +1,21 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
 
 namespace GameOfLife
 {
     public class DisplayMenu
     {
-        public void Menu(bool[,,] cellState, int y, int x, int z)
+        public List<Board> Menu(List<Board> list)
         {
             MenuAnimation menuAnimation = new MenuAnimation();
             NewGame game = new NewGame();
-            LoadLayout load = new LoadLayout();
 
             string userInput;
             bool validChoice = false;
 
             menuAnimation.Animation();
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine(">-----User Input----<");
-            Console.WriteLine(">-------------------<");
 
             while (!validChoice)
             {
@@ -28,12 +24,12 @@ namespace GameOfLife
 
                 if (userInput.Contains("1") || userInput.Contains("new"))
                 {
-                    game.StartNew(cellState, y, x, z);
+                    game.StartNew(list);
                     validChoice = true;
                 }
                 else if (userInput.Contains("2") || userInput.Contains("load"))
                 {
-                    load.Load(cellState, y, x, z);
+                    list = Load(list);
                     validChoice = true;
                 }
                 else if (userInput.Contains("3") || userInput.Contains("exit"))
@@ -42,15 +38,23 @@ namespace GameOfLife
                     validChoice = true;
                 }
                 else
+                {
                     validChoice = false;
                     menuAnimation.Animation();
-                    Console.WriteLine();
-                    Console.WriteLine();
-                    Console.WriteLine();
-                    Console.WriteLine();
-                    Console.WriteLine(">-----User Input----<");
-                    Console.WriteLine("Please Enter a Valid Answer!!!");
+                }
             }
+            return list;
+        }
+        private List<Board> Load(List<Board> list)
+        {
+            FileHandler fileHandler = new FileHandler();
+
+            string openSpan = "SavedGames\\";
+            string jsonString = fileHandler.Load(openSpan, Constants.SavedPath);
+
+            list = JsonConvert.DeserializeObject<List<Board>>(jsonString);
+
+            return list;
         }
     }
 }
